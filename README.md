@@ -7,12 +7,19 @@ the frame.
 Eight classes — neutral, happiness, surprise, sadness, anger, disgust, fear, contempt.
 
 ```bash
+git clone https://github.com/rebantamandal/facial-emotion-recognition.git
+cd facial-emotion-recognition
 uv sync                                   # install
 fer data                                  # build FER+ (~35k images)
-fer train -c configs/balanced.yaml        # fine-tune
+fer train -c configs/balanced.yaml        # fine-tune, ~18 min on a mid-range GPU
 fer export runs/balanced/best.pt          # -> ONNX
 fer webcam runs/balanced/best.onnx        # live demo
 ```
+
+To skip training, grab `best.onnx` and `best.json` from the
+[latest release](https://github.com/rebantamandal/facial-emotion-recognition/releases/latest)
+and drop them in `runs/balanced/`. Keep the two files together — the `.json` carries the
+preprocessing, and the model gives wrong answers without it.
 
 ## Results
 
