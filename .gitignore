@@ -1,0 +1,23 @@
+# Datasets and trained artifacts are large and reproducible; keep them out of git.
+data/
+runs/
+*.pt
+*.onnx
+*.npz
+*.mp4
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+train*.log

@@ -1,0 +1,40 @@
+# Default recipe: strong accuracy while staying comfortably real-time on CPU after
+# ONNX export. Trains in roughly 20-35 minutes on a single mid-range GPU.
+data:
+  source: ferplus
+  root: data
+  image_size: 224
+  label_mode: soft          # train on the FER+ vote distribution, not a single label
+  min_agreement: 0.0
+  batch_size: 128
+  num_workers: 8
+  balanced_sampler: true
+  sampler_power: 1.0
+  grayscale: true
+
+model:
+  backbone: mobilenetv4_conv_medium.e500_r256_in1k
+  pretrained: true
+  drop_rate: 0.2
+  drop_path_rate: 0.1
+  head_init_scale: 0.05
+
+train:
+  epochs: 30
+  lr: 0.0003
+  backbone_lr_mult: 0.1
+  weight_decay: 0.05
+  warmup_epochs: 2
+  min_lr: 0.000001
+  label_smoothing: 0.1
+  mixup_alpha: 0.2
+  cutmix_alpha: 1.0
+  mixup_prob: 0.5
+  ema_decay: 0.9998
+  clip_grad: 1.0
+  amp_dtype: bf16
+  compile: true
+  early_stop_patience: 8
+  seed: 42
+
+out_dir: runs/balanced

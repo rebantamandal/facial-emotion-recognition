@@ -1,0 +1,41 @@
+# Speed-first recipe. Half the input resolution and a smaller backbone, which is ~4x
+# cheaper per frame. FER+ images are natively 48x48, so 112px upscales far less
+# aggressively than 224 does -- the accuracy cost is smaller than the size gap suggests.
+data:
+  source: ferplus
+  root: data
+  image_size: 112
+  label_mode: soft
+  min_agreement: 0.0
+  batch_size: 256
+  num_workers: 8
+  balanced_sampler: true
+  sampler_power: 1.0
+  grayscale: true
+
+model:
+  backbone: mobilenetv4_conv_small.e2400_r224_in1k
+  pretrained: true
+  drop_rate: 0.1
+  drop_path_rate: 0.05
+  head_init_scale: 0.05
+
+train:
+  epochs: 30
+  lr: 0.0005
+  backbone_lr_mult: 0.15
+  weight_decay: 0.03
+  warmup_epochs: 2
+  min_lr: 0.000001
+  label_smoothing: 0.1
+  mixup_alpha: 0.2
+  cutmix_alpha: 1.0
+  mixup_prob: 0.4
+  ema_decay: 0.9998
+  clip_grad: 1.0
+  amp_dtype: bf16
+  compile: true
+  early_stop_patience: 8
+  seed: 42
+
+out_dir: runs/fast
